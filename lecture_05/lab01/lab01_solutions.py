@@ -10,12 +10,10 @@ def falling(n, k):
     >>> falling(4, 0)
     1
     """
-    result = 1
-    while k > 0:
-        result *= n
-        n-=1
-        k-=1
-    return result
+    total, stop = 1, n-k
+    while n > stop:
+        total, n = total*n, n-1
+    return total
 
 
 def sum_digits(y):
@@ -31,12 +29,11 @@ def sum_digits(y):
     >>> a
     6
     """
-    result = 0
+    total = 0
     while y > 0:
-        last_digit = y % 10
-        result += last_digit
-        y = y // 10
-    return result
+        total, y = total + y % 10, y // 10
+    return total
+
 
 def divisible_by_k(n, k):
     """
@@ -58,14 +55,14 @@ def divisible_by_k(n, k):
     >>> c
     0
     """
-    result = 0
-    i = k
+    count = 0
+    i = 1
     while i <= n:
         if i % k == 0:
             print(i)
-            result += 1
+            count += 1
         i += 1
-    return result
+    return count
 
 
 def double_eights(n):
@@ -83,10 +80,29 @@ def double_eights(n):
     >>> double_eights(80808080)
     False
     """
+    def double_eights(n):
+    """Return true if n has two eights in a row.
+    >>> double_eights(8)
+    False
+    >>> double_eights(88)
+    True
+    >>> double_eights(2882)
+    True
+    >>> double_eights(880088)
+    True
+    >>> double_eights(12345)
+    False
+    >>> double_eights(80808080)
+    False
+    """
+    prev_eight = False
     while n > 0:
         last_digit = n % 10
-        second_to_last = n // 10 % 10
-        if last_digit == second_to_last and last_digit == 8:
+        if last_digit == 8 and prev_eight:
             return True
+        elif last_digit == 8:
+            prev_eight = True
+        else:
+            prev_eight = False
         n = n // 10
     return False
