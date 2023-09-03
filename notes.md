@@ -27,3 +27,15 @@ converting a function that takes multiple arguments into a chain of functions th
 >>> curried_pow(2)(3)
 8
 ~~~
+
+# Decorators
+
+a decorator is identical to:
+
+~~~python
+@decorator
+def fn(x):
+    pass
+
+fn = decorator(fn)
+~~~ 

@@ -80,3 +80,19 @@ def match_k(k):
             x = x // 10
         return True
     return match
+
+# the exercise in video 5
+def remove(n, digit):
+    """
+    >>> remove(231, 3)
+    21
+    >>> remove(243132, 2)
+    4313
+    """
+    kept, digits = 0, 0
+    while n > 0:
+        n, last = n // 10, n % 10
+        if last != digit:
+            kept = kept + last * (10 ** digits)
+            digits += 1
+    return digits
