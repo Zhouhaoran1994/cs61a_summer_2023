@@ -39,3 +39,12 @@ def fn(x):
 
 fn = decorator(fn)
 ~~~ 
+
+# Short Circuiting
+
+```and``` and ```or``` always return the last thing they evaluate.
+
+~~~python
+>>> True and 13
+13
+~~~
