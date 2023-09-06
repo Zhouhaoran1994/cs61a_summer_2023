@@ -34,13 +34,13 @@ def is_prime(n):
     >>> is_prime(521)
     True
     """
-    def prime_helper(n, i):
+    def prime_helper(i):
         if i == n:
             return True
         elif n % i == 0:
             return False
-        return prime_helper(n, i+1)
-    return prime_helper(n, 2)
+        return prime_helper(i+1)
+    return prime_helper(2)
 
 # Q5
 def hailstone(n):

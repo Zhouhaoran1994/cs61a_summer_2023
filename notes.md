@@ -47,4 +47,38 @@ fn = decorator(fn)
 ~~~python
 >>> True and 13
 13
+>>> -1 or 5
+-1
+~~~
+
+# Sequence unpacking in For statements
+~~~python
+pairs = [[1, 2], [2, 2], [3, 2], [4, 4]]
+same_count = 0
+
+for x, y in pairs:
+    if x == y:
+        same_count += 1
+~~~
+
+# Dictionary
+~~~python
+d = {"X": 10, "V": 5, "I": 1}
+# get all keys
+>>> d.keys()
+# get all values
+>>> d.values()
+# get keys and values
+>>> d.items()
+
+# contructor
+d = [("X", 10), ("V", 5), ("I", 1)]
+>>> dict(d)
+
+# get a specific key
+>>> d.get("X", "no such key")
+
+# dictionary comprehension
+>>> {x:x*x for x in range(10)}
+{0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25, 6: 36, 7: 49, 8: 64, 9: 81}
 ~~~
