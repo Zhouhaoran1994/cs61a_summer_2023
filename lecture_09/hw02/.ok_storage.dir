@@ -2,3 +2,4 @@
 'summation_using_accumulate-correct', (512, 66)
 'product_using_accumulate-correct', (1024, 66)
 'funception-correct', (1536, 66)
+'num_eights-correct', (2048, 66)

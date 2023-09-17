@@ -165,7 +165,12 @@ def num_eights(n):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'For', 'While'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if n == 0:
+        return 0
+    elif n % 10 == 8:
+        return 1 + num_eights(n // 10)
+    else:
+        return num_eights(n // 10)
 
 
 def waves(n):

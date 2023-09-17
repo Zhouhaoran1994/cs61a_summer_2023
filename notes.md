@@ -61,6 +61,21 @@ for x, y in pairs:
         same_count += 1
 ~~~
 
+# Lists
+## Operation
+~~~python
+s = [4, 0, 1]
+>>> s * 2
+[4, 0, 1, 4, 0, 1]
+~~~
+
+## Slicing
+~~~python
+l = [1, 2, 3, 4]
+>>> l[::-1] # Make a reversed copy of the list
+[4, 3, 2, 1]
+~~~
+
 # Dictionary
 ~~~python
 d = {"X": 10, "V": 5, "I": 1}

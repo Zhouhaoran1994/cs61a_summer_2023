@@ -1,0 +1,6 @@
+'flatten-correct', (0, 66)
+'my_map_syntax_check-correct', (512, 66)
+'my_filter-correct', (1024, 66)
+'my_reduce-correct', (1536, 66)
+'merge-correct', (2048, 66)
+'count_palindromes-correct', (2560, 66)
