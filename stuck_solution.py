@@ -21,3 +21,15 @@ def count_k(n, k):
         for i in range(1, k + 1):
             total += count_k(n - i, k)
         return total
+    
+# https://inst.eecs.berkeley.edu/~cs61a/su23/disc/disc04/#q6-maximum-path-sum
+def max_path_sum(t):
+    """Return the maximum path sum of the tree.
+    >>> t = tree(1, [tree(5, [tree(1), tree(3)]), tree(10)])
+    >>> max_path_sum(t)
+    11
+    """
+    if is_leaf(t):
+        return 1
+    else:
+        return label(t) + max(map(max_path_sum, branches(t)))
