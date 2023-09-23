@@ -1,0 +1,7 @@
+'berry_finder-correct', (0, 66)
+'replace_loki_at_leaf-correct', (512, 66)
+'distance-correct', (1024, 66)
+'closer_city-correct', (1536, 66)
+'check_city_abstraction-correct', (2048, 66)
+'dejavu-correct', (2560, 66)
+'hailstone_tree-correct', (3072, 66)

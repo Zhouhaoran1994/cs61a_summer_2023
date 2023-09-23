@@ -15,7 +15,12 @@ def berry_finder(t):
     >>> berry_finder(t)
     True
     """
-    "*** YOUR CODE HERE ***"
+    if label(t) == "berry":
+        return True
+    elif is_leaf(t):
+        return False
+    else:
+        return any([berry_finder(b) for b in branches(t)])
 
 
 def replace_loki_at_leaf(t, lokis_replacement):
@@ -47,7 +52,10 @@ def replace_loki_at_leaf(t, lokis_replacement):
     >>> laerad == yggdrasil # Make sure original tree is unmodified
     True
     """
-    "*** YOUR CODE HERE ***"
+    if is_leaf(t) and label(t) == "loki":
+        return tree(lokis_replacement)
+    else:
+        return tree(label(t), [replace_loki_at_leaf(b, lokis_replacement) for b in branches(t)])
 
 
 from math import sqrt
@@ -64,8 +72,9 @@ def distance(city_a, city_b):
     >>> distance(city_c, city_d)
     5.0
     """
-    "*** YOUR CODE HERE ***"
-
+    x1, y1 = get_lat(city_a), get_lon(city_a)
+    x2, y2 = get_lat(city_b), get_lon(city_b)
+    return sqrt((x1 - x2)**2 + (y1 - y2)**2)
 
 def closer_city(lat, lon, city_a, city_b):
     """
@@ -82,7 +91,11 @@ def closer_city(lat, lon, city_a, city_b):
     >>> closer_city(41.29, 174.78, bucharest, vienna)
     'Bucharest'
     """
-    "*** YOUR CODE HERE ***"
+    target = make_city("", lat, lon)
+    distance1, distance2 = distance(target, city_a), distance(target, city_b)
+
+    closer = city_a if distance1 < distance2 else city_b
+    return get_name(closer)
 
 
 def check_city_abstraction():
@@ -174,13 +187,18 @@ def dejavu(t, n):
     >>> dejavu(my_tree, 5) # Sums of partial paths like 2 -> 3 don ’t count
     False
     """
-    "*** YOUR CODE HERE ***"
-
+    if (label(t) - n) == 0 and is_leaf(t):
+        return True
+    else:
+        return any([dejavu(b, n - label(t)) for b in branches(t)])
 
 def hailstone_tree(n, h):
     """Generates a tree of hailstone numbers that will reach N, with height H.
     >>> print_tree(hailstone_tree(1, 0))
     1
+    >>> print_tree(hailstone_tree(1, 1))
+    1
+      2
     >>> print_tree(hailstone_tree(1, 4))
     1
       2
@@ -195,11 +213,11 @@ def hailstone_tree(n, h):
         5
           10
     """
-    if _________________________________:
-        return _________________________________
-    branches = _________________________________
-    if ___________ and ___________ and ___________:
-        branches += _________________________________
+    if h == 0:
+        return tree(n)
+    branches = [hailstone_tree(n * 2, h - 1)]
+    if (n % 2 == 0) and ((n - 1) % 3 == 0) and ((n - 1) // 3 != 1):
+        branches += [hailstone_tree((n - 1) // 3, h - 1)]
     return tree(n, branches)
 
 
