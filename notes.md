@@ -77,6 +77,12 @@ l = [1, 2, 3, 4]
 ~~~
 
 # Dictionary
+
+The order of items in a dictionary depends on Python version.
+
+1. Python 3.6+, it orders by adding
+2. Python 3.5+, items appeared in an arbitrary order
+
 ~~~python
 d = {"X": 10, "V": 5, "I": 1}
 # get all keys
@@ -96,4 +102,36 @@ d = [("X", 10), ("V", 5), ("I", 1)]
 # dictionary comprehension
 >>> {x:x*x for x in range(10)}
 {0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25, 6: 36, 7: 49, 8: 64, 9: 81}
+~~~
+
+# Iterator
+
+~~~python
+d = {"one": 1, "two": 2}
+k = iter(d) # equals to iter(d.keys())
+>>> next(k)
+"one"
+>>> next(k)
+"two"
+
+v = iter(d.values())
+i = iter(d.items())
+
+d2 = {"one": 1, "two": 2}
+k = iter(d)
+>>> next(k)
+"one"
+>>> d2["zero"] = 0
+>>> next(k)
+RuntimeError
+~~~
+
+~~~python
+# be careful for for-looping an iterator
+ri = iter(range(5))
+for i in ri:
+    print(i) # it works fine
+
+for i in ri:
+    print(i) # prints nothing as it already reached the end
 ~~~
