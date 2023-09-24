@@ -132,13 +132,13 @@ def end(s):
 def planet(mass):
     """Construct a planet of some mass."""
     assert mass > 0
-    "*** YOUR CODE HERE ***"
+    return ["planet", mass]
 
 
 def mass(w):
     """Select the mass of a planet."""
     assert is_planet(w), 'must call mass on a planet'
-    "*** YOUR CODE HERE ***"
+    return w[1]
 
 
 def is_planet(w):
@@ -180,6 +180,8 @@ def balanced(m):
     >>> t, u, v = examples()
     >>> balanced(t)
     True
+    >>> balanced(u)
+    True
     >>> balanced(v)
     True
     >>> w = mobile(arm(3, t), arm(2, u))
@@ -194,8 +196,17 @@ def balanced(m):
     >>> check(HW_SOURCE_FILE, 'balanced', ['Index'])
     True
     """
-    "*** YOUR CODE HERE ***"
-
+    if is_planet(m):
+        return True
+    else:
+        left_arm, right_arm = left(m), right(m)
+        left_hanging, right_hanging = end(left_arm), end(right_arm)
+        left_torque, right_torque = length(left_arm) * total_weight(left_hanging), length(right_arm) * total_weight(right_hanging)
+        
+        if left_torque != right_torque:
+            return False
+        else:
+            return all([balanced(left_hanging), balanced(right_hanging)])
 
 def totals_tree(m):
     """Return a tree representing the mobile with its total weight at the root.
@@ -226,7 +237,11 @@ def totals_tree(m):
     >>> check(HW_SOURCE_FILE, 'totals_tree', ['Index'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if is_planet(m):
+        return tree(total_weight(m))
+    else:
+        left_hanging, right_hanging = end(left(m)), end(right(m))
+        return tree(total_weight(m), [totals_tree(left_hanging), totals_tree(right_hanging)])
 
 
 # Tree ADT

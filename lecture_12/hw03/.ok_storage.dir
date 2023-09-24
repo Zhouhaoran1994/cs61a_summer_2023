@@ -1,3 +1,6 @@
 'filter-correct', (0, 66)
 'deep_map_mut-correct', (512, 66)
 'has_path-correct', (1024, 66)
+'total_weight-correct', (1536, 66)
+'balanced-correct', (2048, 66)
+'totals_tree-correct', (2560, 66)
