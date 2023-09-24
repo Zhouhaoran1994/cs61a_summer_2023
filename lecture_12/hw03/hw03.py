@@ -5,7 +5,13 @@ def filter(pred, lst):
     >>> original_list
     [2, 0]
     """
-    "*** YOUR CODE HERE ***"
+    filter_out = []
+    for e in lst:
+        if not pred(e):
+            filter_out.append(e)
+    
+    for e in filter_out:
+        lst.remove(e)
 
 
 def deep_map_mut(func, lst):
@@ -22,7 +28,11 @@ def deep_map_mut(func, lst):
     >>> l
     [1, 4, [9, [16], 25], 36]
     """
-    "*** YOUR CODE HERE ***"
+    for i in range(len(lst)):
+        if type(lst[i]) is not list:
+            lst[i] = func(lst[i])
+        else:
+            deep_map_mut(func, lst[i])
 
 
 def has_path(t, word):
@@ -56,7 +66,17 @@ def has_path(t, word):
     False
     """
     assert len(word) > 0, 'no path for empty word.'
-    "*** YOUR CODE HERE ***"
+    if word[0] != label(t):
+        return False
+    elif word == label(t):
+        return True
+    else:
+        found = False
+        for b in branches(t):
+            if has_path(b, word[1:]):
+                found = True
+        return found
+
 
 
 HW_SOURCE_FILE = __file__
