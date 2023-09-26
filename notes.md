@@ -135,3 +135,26 @@ for i in ri:
 for i in ri:
     print(i) # prints nothing as it already reached the end
 ~~~
+
+# Count how many times a function was called
+
+~~~python
+def count(f):
+    def counted(n):
+        counted.call_count += 1
+        return f(n)
+    counted.call_count = 0
+    return counted
+~~~
+
+# Memoization
+
+~~~python
+def memo(f):
+    def memoized(n):
+        cache = {}
+        if n not in cache:
+            cache[n] = f(n)
+        return cache[n]
+    return memoized
+~~~
