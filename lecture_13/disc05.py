@@ -134,3 +134,112 @@ def count_digit(n, digit):
             count += 1
         n = n // 10
     return count
+
+# Q7
+def make_onion(f, g):
+    """
+    Write a function make_onion that takes in two one-argument 
+    functions, F and G, and returns a function that will take in 
+    X, Y, and LIMIT and return True if it is possible to reach Y 
+    from X in LIMIT steps or less, via only repeated applications 
+    of F and G, and False otherwise.
+
+    >>> add_one = lambda x: x + 1
+    >>> mul_by_two = lambda y: y * 2
+    >>> can_reach = make_onion(add_one, mul_by_two)
+    >>> can_reach(0, 5, 4)      # 5 = add_one(mul_by_two(mul_by_two(add_one(0))))
+    True
+    >>> can_reach(0, 5, 3)      # Not possible
+    False
+    >>> can_reach(1, 1, 0)      # 1 = 1
+    True
+    >>> add_ing = lambda x: x + "ing"
+    >>> add_end = lambda y: y + "end"
+    >>> can_reach_string = make_onion(add_ing, add_end)
+    >>> can_reach_string("cry", "crying", 1)      # "crying" = add_ing("cry")
+    True
+    >>> can_reach_string("un", "unending", 3)      # "unending" = add_ing(add_end("un"))
+    True
+    >>> can_reach_string("peach", "folding", 4)      # Not possible
+    False
+    """
+    def can_reach(x, y, limit):
+        if x == y:
+            return True
+        elif limit == 0:
+            return False
+        else:
+            return can_reach(f(x), y, limit - 1) or can_reach(g(x), y, limit - 1)
+    return can_reach
+
+# Q8
+def knapsack(weights, values, c):
+    """
+    >>> w = [2, 6, 3, 3]
+    >>> v = [1, 5, 3, 3]
+    >>> knapsack(w, v, 6)
+    6
+    """
+    def helper(weights, values, c):
+        if len(weights) == 0:
+            return 0
+        elif min(weights) > c:
+            return 0
+        elif weights[0] <= c:
+            return values[0] + helper(weights[1:], values[1:], c - weights[0])
+        else:
+            return helper(weights[1:], values[1:], c)
+
+    possibilities = [helper(weights[i:], values[i:], c) for i in range(len(weights))]
+    return max(possibilities)
+
+# Q10
+from tree import *
+
+def add_trees(t1, t2):
+    """
+    >>> numbers = tree(1,
+    ...                [tree(2,
+    ...                      [tree(3),
+    ...                       tree(4)]),
+    ...                 tree(5,
+    ...                      [tree(6,
+    ...                            [tree(7)]),
+    ...                       tree(8)])])
+    >>> print_tree(add_trees(numbers, numbers))
+    2
+      4
+        6
+        8
+      10
+        12
+          14
+        16
+    >>> print_tree(add_trees(tree(2), tree(3, [tree(4), tree(5)])))
+    5
+      4
+      5
+    >>> print_tree(add_trees(tree(2, [tree(3)]), tree(2, [tree(3), tree(4)])))
+    4
+      6
+      4
+    >>> print_tree(add_trees(tree(2, [tree(3, [tree(4), tree(5)])]), \
+    tree(2, [tree(3, [tree(4)]), tree(5)])))
+    4
+      6
+        8
+        5
+      5
+    """
+    if is_leaf(t1) and is_leaf(t2):
+        return tree(label(t1) + label(t2))
+    elif is_leaf(t1):
+        return tree(label(t1) + label(t2), [branches(t2)])
+    elif is_leaf(t2):
+        return tree(label(t1) + label(t2), [branches(t1)])
+    else:
+        short_tree = t1 if len(branches(t2)) >= len(branches(t1)) else t2
+        extra_b = []
+        # add the existing leaves together
+        # add the extra leaves to the short branch
+        # how do we know which is shorter?
