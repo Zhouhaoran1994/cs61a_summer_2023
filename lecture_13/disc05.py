@@ -233,13 +233,17 @@ def add_trees(t1, t2):
     """
     if is_leaf(t1) and is_leaf(t2):
         return tree(label(t1) + label(t2))
-    elif is_leaf(t1):
-        return tree(label(t1) + label(t2), [branches(t2)])
-    elif is_leaf(t2):
-        return tree(label(t1) + label(t2), [branches(t1)])
     else:
-        short_tree = t1 if len(branches(t2)) >= len(branches(t1)) else t2
-        extra_b = []
-        # add the existing leaves together
-        # add the extra leaves to the short branch
-        # how do we know which is shorter?
+        if len(branches(t1)) >= len(branches(t2)):
+            short, long = t2, t1
+        else:
+            short, long = t1, t2
+
+        b = []
+        short_length = len(branches(short))
+        for i in range(short_length):
+            b.append(add_trees(branches(short)[i], branches(long)[i]))
+        
+        b += branches(long)[short_length:]
+
+        return tree(label(t1) + label(t2), b)
