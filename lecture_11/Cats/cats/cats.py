@@ -125,9 +125,16 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     >>> autocorrect("tosting", ["testing", "asking", "fasting"], first_diff, 10)
     'testing'
     """
-    # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
-    # END PROBLEM 5
+    if word_list.count(typed_word) > 0:
+        return typed_word
+    similarTypeWord = typed_word
+    similarNum = limit + 1
+    for i in word_list:
+        curDiff = diff_function(typed_word, i, limit)
+        if curDiff <= limit and curDiff < similarNum:
+            similarTypeWord = i
+            similarNum = curDiff
+    return similarTypeWord
 
 
 def feline_fixes(typed, source, limit):
@@ -163,7 +170,7 @@ def feline_fixes(typed, source, limit):
 
 
 def minimum_mewtations(typed, source, limit):
-    """A diff function that computes the edit distance from TYPED to SOURCE.
+    """ A diff function that computes the edit distance from TYPED to SOURCE.
     This function takes in a string TYPED, a string SOURCE, and a number LIMIT.
     Arguments:
         typed: a starting word
@@ -177,8 +184,36 @@ def minimum_mewtations(typed, source, limit):
     >>> minimum_mewtations("ckiteus", "kittens", big_limit) # ckiteus -> kiteus -> kitteus -> kittens
     3
     """
-    assert False, 'Remove this line'
-    if ___________: # Base cases should go here, you may add more base cases as needed.
+    """
+    hi -> he
+    1.hi -> hi (1)
+    2.hi -> h, h -> he (2)
+
+    min(all possibilities)
+    all possibilities = minimum_mewtations(add) + minimum_mewtations(remove) + minimum_mewtations(substitude)
+    """
+
+    # ei, e
+    # i, "" 
+    change = 0
+    if typed == source:
+        return 0
+    elif len(typed) == 0 or len(source) == 0:
+        return max(len(typed), len(source))
+    elif limit == -1:
+        return 0
+    elif typed[0] == source[0]:
+        return minimum_mewtations(typed[1:], source[1:], limit)
+    else:
+        # recursive leap of faith
+        change += 1
+        add = minimum_mewtations(source[0] + typed, source, limit - 1)
+        remove = minimum_mewtations(typed[1:], source, limit - 1)
+        substitude = minimum_mewtations(source[0] + typed[1:], source, limit - 1)
+
+        return change + min(add, remove, substitude) # min(1, 1, 0) -> 0
+
+    """ if ___________: # Base cases should go here, you may add more base cases as needed.
         # BEGIN
         "*** YOUR CODE HERE ***"
         # END
@@ -193,7 +228,7 @@ def minimum_mewtations(typed, source, limit):
         substitute = ...
         # BEGIN
         "*** YOUR CODE HERE ***"
-        # END
+        # END """
 
 
 def final_diff(typed, source, limit):

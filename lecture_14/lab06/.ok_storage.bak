@@ -1,0 +1,7 @@
+'prune_leaves-correct', (0, 66)
+'ordered_digits-correct', (512, 66)
+'get_k_run_starter-correct', (1024, 66)
+'make_repeater-correct', (1536, 66)
+'apply_twice-correct', (2048, 66)
+'subseqs-correct', (2560, 66)
+'non_decrease_subseqs-correct', (3072, 66)

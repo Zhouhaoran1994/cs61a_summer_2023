@@ -12,6 +12,34 @@ A lambda expression evaluates to a function, called a lambda function. For examp
 11
 ~~~
 
+## A Hard Pratice
+
+为什么这个功能可以实现？
+
+因为```(lambda f, i: lambda x: x % i == 0 or f(x))(checker, i)```很巧妙地利用```f```记录了上一个```i```的环境
+
+~~~python
+def div_by_primes_under(n):
+    """
+    >>> div_by_primes_under(10)(11)
+    False
+    >>> div_by_primes_under(10)(121)
+    False
+    >>> div_by_primes_under(10)(12)
+    True
+    >>> div_by_primes_under(5)(1)
+    False
+    """
+    checker = lambda x: False
+    i = 2
+    while i <= n:
+        if not checker(i):
+            checker = (lambda f, i: lambda x: x % i == 0 or f(x))(checker, i)
+        i = i + 1
+    return checker
+~~~
+
+
 # Currying
 
 converting a function that takes multiple arguments into a chain of functions that each take a single argument.

@@ -36,7 +36,16 @@ def prune_leaves(t, vals):
         5
       6
     """
-    "*** YOUR CODE HERE ***"
+    if is_leaf(t) and label(t) in vals:
+        return None
+    elif is_leaf(t):
+        return t
+    else:
+        new_branches = []
+        for b in branches(t):
+            if prune_leaves(b, vals):
+                new_branches.append(prune_leaves(b, vals))
+        return tree(label(t), new_branches)
 
 
 def ordered_digits(x):
@@ -58,7 +67,13 @@ def ordered_digits(x):
     False
 
     """
-    "*** YOUR CODE HERE ***"
+    while x > 0:
+        last, second_last = x % 10, x // 10 % 10
+        if last < second_last:
+            return False
+        else:
+            return ordered_digits(x // 10)
+    return True
 
 
 def get_k_run_starter(n, k):
@@ -82,14 +97,13 @@ def get_k_run_starter(n, k):
     """
     i = 0
     final = None
-    while ____________________________:
-        while ____________________________:
-            ____________________________
-        final = ____________________________
-        i = ____________________________
-        n = ____________________________
+    while not final:
+        while n > 10 and n % 10 > n // 10 % 10:
+            n = n // 10
+        final = n % 10 if i == k else None
+        i += 1
+        n = n // 10
     return final
-
 
 def composer(func1, func2):
     """Returns a function f, such that f(x) = func1(func2(x))."""
@@ -113,8 +127,65 @@ def make_repeater(func, n):
     >>> make_repeater(square, 0)(5) # Yes, it makes sense to apply the function zero times!
     5
     """
-    "*** YOUR CODE HERE ***"
+    def repeat(x):
+        for _ in range(n):
+            x = func(x)
+        return x
+    return repeat
 
+# extra challenge
+def accumulate(combiner, base, n, term):
+    """Return the result of combining the first n terms in a sequence and base.
+    The terms to be combined are term(1), term(2), ..., term(n).  combiner is a
+    two-argument commutative function.
+
+    >>> accumulate(add, 0, 5, identity)  # 0 + 1 + 2 + 3 + 4 + 5
+    15
+    >>> accumulate(add, 11, 5, identity) # 11 + 1 + 2 + 3 + 4 + 5
+    26
+    >>> accumulate(add, 11, 0, identity) # 11
+    11
+    >>> accumulate(add, 11, 3, square)   # 11 + 1^2 + 2^2 + 3^2
+    25
+    >>> accumulate(mul, 2, 3, square)    # 2 * 1^2 * 2^2 * 3^2
+    72
+    >>> accumulate(lambda x, y: x + y + 1, 2, 3, square)
+    19
+    >>> accumulate(lambda x, y: 2 * (x + y), 2, 3, square)
+    58
+    >>> accumulate(lambda x, y: (x + y) % 17, 19, 20, square)
+    16
+    """
+    for i in range(1, n + 1):
+        base = combiner(base, term(i))
+    return base
+
+def composing_repeater(func, n):
+    """Returns the function that computes the nth application of func.
+
+    >>> add_three = composing_repeater(increment, 3)
+    >>> add_three(5)
+    8
+    >>> composing_repeater(triple, 5)(1) # 3 * 3 * 3 * 3 * 3 * 1
+    243
+    >>> composing_repeater(square, 2)(5) # square(square(5))
+    625
+    >>> composing_repeater(square, 4)(5) # square(square(square(square(5))))
+    152587890625
+    >>> composing_repeater(square, 0)(5) # Yes, it makes sense to apply the function zero times!
+    5
+    """
+    return accumulate(composer, identity, n, lambda _: func)
+
+def apply_twice(func):
+    """Returns a function that applies func twice.
+
+    func -- a function that takes one argument
+
+    >>> apply_twice(square)(2)
+    16
+    """
+    return lambda x: make_repeater(func, 2)(x)
 
 def div_by_primes_under(n):
     """
@@ -128,12 +199,12 @@ def div_by_primes_under(n):
     False
     """
     checker = lambda x: False
-    i = ____________________________
-    while ____________________________:
+    i = 2
+    while i <= n:
         if not checker(i):
-            checker = ____________________________
-        i = ____________________________
-    return ____________________________
+            checker = (lambda f, i: lambda x: x % i == 0 or f(x))(checker, i)
+        i = i + 1
+    return checker
 
 
 def div_by_primes_under_no_lambda(n):
@@ -170,7 +241,7 @@ def insert_into_all(item, nested_list):
     >>> insert_into_all(0, nl)
     [[0], [0, 1, 2], [0, 3]]
     """
-    "*** YOUR CODE HERE ***"
+    return [[item] + e for e in nested_list]
 
 
 def subseqs(s):
@@ -183,12 +254,15 @@ def subseqs(s):
     >>> subseqs([])
     [[]]
     """
-    if ________________:
-        ________________
+    
+    # [2, 3]
+    # [[], [3]] + [[2], [2, 3]] -> subsets + insert_into_all(s[0], subsets)
+   
+    if not s:
+        return [[]]
     else:
-        ________________
-        ________________
-
+        subsets = subseqs(s[1:])
+        return insert_into_all(s[0], subsets) + subsets
 
 def non_decrease_subseqs(s):
     """Assuming that S is a list, return a nested list of all subsequences
@@ -206,14 +280,14 @@ def non_decrease_subseqs(s):
     """
     def subseq_helper(s, prev):
         if not s:
-            return ____________________
+            return [[]]
         elif s[0] < prev:
-            return ____________________
+            return subseq_helper(s[1:], s[0])
         else:
-            a = ______________________
-            b = ______________________
-            return insert_into_all(________, ______________) + ________________
-    return subseq_helper(____, ____)
+            a = subseq_helper(s[1:], s[0]) # nondecreasing subsets
+            b = subseq_helper(s[1:], prev) # all subsets
+            return insert_into_all(s[0], a) + b
+    return subseq_helper(s, -1)
 
 
 def num_trees(n):
@@ -615,3 +689,6 @@ def copy_tree(t):
     5
     """
     return tree(label(t), [copy_tree(b) for b in branches(t)])
+
+numbers = tree(1, [tree(2), tree(3, [tree(4), tree(5)]), tree(6, [tree(7)])])
+prune_leaves(numbers, (3, 4, 6, 7))
