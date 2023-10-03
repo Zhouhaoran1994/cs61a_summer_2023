@@ -110,3 +110,32 @@ def div_by_primes_under_no_lambda(n):
             checker = outer(checker, i)
         i = i + 1
     return checker
+
+# https://inst.eecs.berkeley.edu/~cs61a/su23/lab/lab06/#q12-number-of-trees
+def num_trees(n):
+    """Returns the number of unique full binary trees with exactly n leaves. E.g.,
+
+    1   2        3       3    ...
+    *   *        *       *
+       / \      / \     / \
+      *   *    *   *   *   *
+              / \         / \
+             *   *       *   *
+
+    >>> num_trees(1)
+    1
+    >>> num_trees(2)
+    1
+    >>> num_trees(3)
+    2
+    >>> num_trees(8)
+    429
+
+    """
+    if n == 1 or n == 2:
+        return 1
+    # catalan number
+    ans = 0
+    for i in range(1, n):
+        ans += num_trees(i) * num_trees(n - i)
+    return ans

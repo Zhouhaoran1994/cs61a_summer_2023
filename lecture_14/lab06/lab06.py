@@ -282,10 +282,10 @@ def non_decrease_subseqs(s):
         if not s:
             return [[]]
         elif s[0] < prev:
-            return subseq_helper(s[1:], s[0])
+            return subseq_helper(s[1:], prev)
         else:
-            a = subseq_helper(s[1:], s[0]) # nondecreasing subsets
-            b = subseq_helper(s[1:], prev) # all subsets
+            a = subseq_helper(s[1:], s[0])
+            b = subseq_helper(s[1:], prev)
             return insert_into_all(s[0], a) + b
     return subseq_helper(s, -1)
 
@@ -306,11 +306,24 @@ def num_trees(n):
     1
     >>> num_trees(3)
     2
+    >>> num_trees(4)
+    5
     >>> num_trees(8)
     429
 
     """
-    "*** YOUR CODE HERE ***"
+    # 3 = 2+1, 1+2
+    # 4 = 3+1, 1+3, 2+2
+    # 5 = 4+1, 1+4, 4+1, 1+4, 
+    # n = (n-1)+1, 1+(n-1), (n-2)+(1+1), 
+
+    if n == 1 or n == 2:
+        return 1
+    else:
+        total = 0
+        for i in range(1, n):
+            total = total + num_trees(n-i) * num_trees(i) # 2+1, 1+2 # 3+1, 2+2, 1+3
+        return total
 
 
 def remove_odd_indices(lst, odd):
@@ -337,7 +350,14 @@ def remove_odd_indices(lst, odd):
     ...       ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if lst:
+        if odd:
+            kept = lst[0]
+            return [kept] + remove_odd_indices(lst[1:], not odd)
+        else:
+            return remove_odd_indices(lst[1:], not odd)
+    else:
+        return []
 
 
 def subset_sum(target, lst):
@@ -353,8 +373,12 @@ def subset_sum(target, lst):
     >>> subset_sum(0, [-1, -3, 15])     # Sum up none of the numbers to get 0
     True
     """
-    "*** YOUR CODE HERE ***"
-
+    if  target == 0:
+        return True
+    
+    subsets = subseqs(lst)
+    subsets.remove([])
+    return True if target in map(sum, subsets) else False
 
 def card(n):
     """Return the playing card numeral as a string for a positive n <= 13."""
@@ -382,11 +406,11 @@ def shuffle(cards):
     ['AH', 'AD', 'AS', 'AC', '2H', '2D', '2S', '2C', '3H', '3D', '3S', '3C']
     """
     assert len(cards) % 2 == 0, 'len(cards) must be even'
-    half = _______________
+    half = len(cards) // 2
     shuffled = []
-    for i in _____________:
-        _________________
-        _________________
+    for i in range(half):
+        shuffled.append(cards[:half][i])
+        shuffled.append(cards[half:][i])
     return shuffled
 
 
@@ -427,9 +451,9 @@ def trade(first, second):
     """
     m, n = 1, 1
 
-    equal_prefix = lambda: ______________________
-    while _______________________________:
-        if __________________:
+    equal_prefix = lambda: sum(first[:m]) == sum(second[:n])
+    while m <= len(first) and n <= len(second) and not equal_prefix():
+        if sum(first[:m]) < sum(second[:n]):
             m += 1
         else:
             n += 1
@@ -439,7 +463,6 @@ def trade(first, second):
         return 'Deal!'
     else:
         return 'No deal!'
-
 
 def str_interval(x):
     """Return a string representation of interval x."""
@@ -462,12 +485,12 @@ def interval(a, b):
 
 def lower_bound(x):
     """Return the lower bound of interval x."""
-    "*** YOUR CODE HERE ***"
+    return x[0]
 
 
 def upper_bound(x):
     """Return the upper bound of interval x."""
-    "*** YOUR CODE HERE ***"
+    return x[1]
 
 
 def str_interval(x):
@@ -486,18 +509,17 @@ def add_interval(x, y):
 def mul_interval(x, y):
     """Return the interval that contains the product of any value in x and any
     value in y."""
-    p1 = x[0] * y[0]
-    p2 = x[0] * y[1]
-    p3 = x[1] * y[0]
-    p4 = x[1] * y[1]
+    p1 = lower_bound(x) * lower_bound(y)
+    p2 = lower_bound(x) * upper_bound(y)
+    p3 = upper_bound(x) * lower_bound(y)
+    p4 = upper_bound(x) * upper_bound(y)
     return [min(p1, p2, p3, p4), max(p1, p2, p3, p4)]
 
 
 def sub_interval(x, y):
     """Return the interval that contains the difference between any value in x
     and any value in y."""
-    "*** YOUR CODE HERE ***"
-
+    return add_interval(x, -y)
 
 def div_interval(x, y):
     """Return the interval that contains the quotient of any value in x divided by
@@ -528,8 +550,8 @@ def check_par():
     >>> lower_bound(x) != lower_bound(y) or upper_bound(x) != upper_bound(y)
     True
     """
-    r1 = interval(1, 1)  # Replace this line!
-    r2 = interval(1, 1)  # Replace this line!
+    r1 = interval(2, 4)  # Replace this line!
+    r2 = interval(2, 4)  # Replace this line!
     return r1, r2
 
 
@@ -543,8 +565,12 @@ def preorder(t):
     >>> preorder(tree(2, [tree(4, [tree(6)])]))
     [2, 4, 6]
     """
-    "*** YOUR CODE HERE ***"
-
+    if is_leaf(t):
+        return [label(t)]
+    total = []
+    for b in branches(t):
+        total += preorder(b)
+    return [label(t)] + total
 
 def repeated(t, k):
     """Return the first value in iterator T that appears K times in a row.
@@ -568,7 +594,18 @@ def repeated(t, k):
     2
     """
     assert k > 1
-    "*** YOUR CODE HERE ***"
+    repeat_count = 1
+    first = next(t)
+    while True:
+        n = next(t)
+        if first == n:
+            repeat_count += 1
+        else:
+            first = n
+            repeat_count = 1
+        
+        if repeat_count == k:
+            return first
 
 
 def hailstone(n):
@@ -584,7 +621,13 @@ def hailstone(n):
     2
     1
     """
-    "*** YOUR CODE HERE ***"
+    while n > 1:
+        yield n
+        if n % 2 == 0:
+            n = n // 2
+        else:
+            n = n * 3 + 1
+    yield n
 
 
 def change_abstraction(change):

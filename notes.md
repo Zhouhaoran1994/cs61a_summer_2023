@@ -186,3 +186,71 @@ def memo(f):
         return cache[n]
     return memoized
 ~~~
+
+# Efficiency
+
+## Exponential Time
+
+指数时间: Incrementing n multiplies time by a constant
+
+$a*b^{n+1}=(a*b^n)*b$
+
+~~~python
+def fib(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fib(n-2) + fib(n-1)
+~~~
+
+## Quadratic growth
+
+二次增长: Incrementing n increases time by n times a constant
+
+$a*(n+1)^2=(a*n^2)+a*(2n+1)$
+
+~~~python
+def overlap(a, b):
+    count = 0
+    for item in a:
+        for other in b:
+            if item == other:
+                count += 1
+    return count
+~~~
+
+## Linear growth
+
+线性增长: Incrementing n increases time by a constant
+
+$a*(n+1)=(a*n)+a$
+
+~~~python
+def exp(b, n):
+    if n == 0:
+        return 1
+    else:
+        return b * exp(b, n-1)
+~~~
+
+## Logarithmic growth
+
+对数增长: Doubling n only increments time by a constant
+
+$a*ln(2*n)=(a*lnn)+a*ln2$
+
+~~~python
+def exp_fast(b, n):
+    if n == 0:
+        return 1
+    elif n % 2 == 0:
+        return square(exp_fast(b, n//2))
+    else:
+        return b * exp_fast(b, n-1)
+~~~
+
+# Constant growth
+
+常数增长: Increasing n doesn't affect time

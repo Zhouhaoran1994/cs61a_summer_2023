@@ -116,3 +116,26 @@ def div_by_primes_under_no_lambda(n):
             checker = ____________________________
         i = ____________________________
     return ____________________________
+
+# https://inst.eecs.berkeley.edu/~cs61a/su23/lab/lab06/#q12-number-of-trees
+def num_trees(n):
+    """Returns the number of unique full binary trees with exactly n leaves. E.g.,
+
+    1   2        3       3    ...
+    *   *        *       *
+       / \      / \     / \
+      *   *    *   *   *   *
+              / \         / \
+             *   *       *   *
+
+    >>> num_trees(1)
+    1
+    >>> num_trees(2)
+    1
+    >>> num_trees(3)
+    2
+    >>> num_trees(8)
+    429
+
+    """
+    "*** YOUR CODE HERE ***"
