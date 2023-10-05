@@ -139,3 +139,22 @@ def num_trees(n):
 
     """
     "*** YOUR CODE HERE ***"
+
+# https://inst.eecs.berkeley.edu/~cs61a/su23/lab/lab07/#q5-stair-ways
+def stair_ways(n):
+    """
+    Yields all ways to climb a set of N stairs taking
+    1 or 2 steps at a time.
+
+    >>> list(stair_ways(0))
+    [[]]
+    >>> s_w = stair_ways(4)
+    >>> sorted([next(s_w) for _ in range(5)])
+    [[1, 1, 1, 1], [1, 1, 2], [1, 2, 1], [2, 1, 1], [2, 2]]
+    >>> try: # Ensure you're not yielding extra
+    ...     next(s_w)
+    ...     assert False
+    ... except StopIteration:
+    ...     pass
+    """
+    "*** YOUR CODE HERE ***"
