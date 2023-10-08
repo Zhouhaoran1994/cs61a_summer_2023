@@ -44,7 +44,7 @@ def amplify(f, x):
 def sequence_gen(term):
     """
     Yields term(1), term(2), term(3), ...
-    
+
     >>> s1 = sequence_gen(lambda x: x**2)
     >>> [next(s1) for _ in range(5)]
     [1, 4, 9, 16, 25]
@@ -55,8 +55,8 @@ def sequence_gen(term):
     ...       ['While', 'For'])
     True
     """
-    pass
-
+    yield term(1)
+    yield from sequence_gen(lambda x: term(x + 1))
 
 def stair_ways(n):
     """
@@ -74,10 +74,15 @@ def stair_ways(n):
     ... except StopIteration:
     ...     pass
     """
-    # n = 2
-    # step_one = [1] + step(1, 2) -> [1] + [1] -> [1, 1] step_two = [2] + [] -> [2]
-    # step_one = [1] + step(2, 2) -> [1] + [] -> [1]
-    i = 0
+    if n == 0:
+        yield []
+    elif n == 1:
+        yield [1]
+    else:
+        for way in stair_ways(n - 1):
+            yield way + [1]
+        for way in stair_ways(n - 2):
+            yield way + [2]
     
 
 
@@ -97,8 +102,13 @@ def church_generator(f):
     3
     4
     """
-    # g = ____________________________________________
-    # while True:
-    #     ____________________________________________
-    #     ____________________________________________
-    pass
+    g = lambda x: x
+    while True:
+        yield g
+        g = (lambda g: lambda x: g(f(x)))(g)
+        # g = lambda x: f(x)
+        # lambda x: g(f(x))
+
+# while True:
+#   checker = (lambda f, i: lambda x: x % i == 0 or f(x))(checker, i)
+# term = lambda x: term(x+1)

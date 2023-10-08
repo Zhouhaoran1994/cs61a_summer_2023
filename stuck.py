@@ -140,6 +140,25 @@ def num_trees(n):
     """
     "*** YOUR CODE HERE ***"
 
+# https://inst.eecs.berkeley.edu/~cs61a/su23/lab/lab07/#q4-sequence-generator
+def sequence_gen(term):
+    """
+    Yields term(1), term(2), term(3), ...
+
+    >>> s1 = sequence_gen(lambda x: x**2)
+    >>> [next(s1) for _ in range(5)]
+    [1, 4, 9, 16, 25]
+    >>> # Do not use while/for loops!
+    >>> from construct_check import check
+    >>> # ban iteration
+    >>> check(LAB_SOURCE_FILE, 'sequence_gen',
+    ...       ['While', 'For'])
+    True
+    """
+    yield ___________________
+    yield from ___________________
+
+
 # https://inst.eecs.berkeley.edu/~cs61a/su23/lab/lab07/#q5-stair-ways
 def stair_ways(n):
     """
@@ -157,4 +176,25 @@ def stair_ways(n):
     ... except StopIteration:
     ...     pass
     """
-    "*** YOUR CODE HERE ***"
+
+# https://inst.eecs.berkeley.edu/~cs61a/su23/lab/lab07/#q6-church-generator
+def church_generator(f):
+    """Takes in a function f and yields functions which apply f
+    to their argument one more time than the previously generated
+    function.
+
+    >>> increment = lambda x: x + 1
+    >>> church = church_generator(increment)
+    >>> for _ in range(5):
+    ...     fn = next(church)
+    ...     print(fn(0))
+    0
+    1
+    2
+    3
+    4
+    """
+    g = ____________________________________________
+    while True:
+        ____________________________________________ 
+        ____________________________________________
