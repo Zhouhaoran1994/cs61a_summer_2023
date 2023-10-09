@@ -8,7 +8,13 @@ def differences(it):
     >>> list(differences([1]))
     []
     """
-    "*** YOUR CODE HERE ***"
+    if type(it) == list and len(it) < 2:
+        return []
+    
+    first = next(it)
+    for i in it:
+        yield i - first
+        first = i
 
 
 def merge(x, y):
@@ -17,13 +23,25 @@ def merge(x, y):
     ...     while True:
     ...         yield start
     ...         start += step
-    >>> x = sequence(2, 3) # 2, 5, 8, 11, 14, ...
-    >>> y = sequence(3, 2) # 3, 5, 7, 9, 11, 13, 15, ...
+    >>> x = sequence(2, 3) # 2, 5, 8, 11, 14, 17, 20, 23...
+    >>> y = sequence(3, 2) # 3, 5, 7, 9, 11, 13, 15, 17, 19, 21...
     >>> result = merge(x, y) # 2, 3, 5, 7, 8, 9, 11, 13, 14, 15
     >>> [next(result) for _ in range(10)]
     [2, 3, 5, 7, 8, 9, 11, 13, 14, 15]
     """
-    "*** YOUR CODE HERE ***"
+    yielded = []
+    while True:
+        first, second = next(x), next(y)
+        small, big = min(first, second), max(first, second)
+
+        if small == big:
+            yield small
+        else:
+            if small in yielded:
+                small = next(y)
+            yield small
+            yield big
+            yielded = yielded + [small] + [big]
 
 
 def perms(seq):

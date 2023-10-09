@@ -56,7 +56,10 @@ def sequence_gen(term):
     True
     """
     yield term(1)
-    yield from sequence_gen(lambda x: term(x + 1))
+    yield from sequence_gen(lambda x: term(x+1))
+
+# term = lambda x: term(x+1)
+# (lambda x: term(x+1))(1) -> term(2)
 
 def stair_ways(n):
     """
@@ -104,11 +107,5 @@ def church_generator(f):
     """
     g = lambda x: x
     while True:
-        yield g
+        yield g 
         g = (lambda g: lambda x: g(f(x)))(g)
-        # g = lambda x: f(x)
-        # lambda x: g(f(x))
-
-# while True:
-#   checker = (lambda f, i: lambda x: x % i == 0 or f(x))(checker, i)
-# term = lambda x: term(x+1)
