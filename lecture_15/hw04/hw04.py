@@ -66,8 +66,19 @@ def perms(seq):
     >>> sorted(perms("ab"))
     [['a', 'b'], ['b', 'a']]
     """
-    "*** YOUR CODE HERE ***"
-
+    # [a, b]
+    # 
+    if len(seq) == 1:
+        yield seq
+    else:
+        permutation = []
+        for s in perms(seq[:-1]):
+            for i in range(len(s) + 1):
+                p = list(s)
+                p.insert(i, seq[-1])
+                permutation.append(p)
+        yield from permutation
+sorted(perms([1, 2, 3]))
 
 def yield_paths(t, value):
     """Yields all possible paths from the root of t to a node with the label
