@@ -78,12 +78,14 @@ def perms(seq):
                 p.insert(i, seq[-1])
                 permutation.append(p)
         yield from permutation
-sorted(perms([1, 2, 3]))
 
 def yield_paths(t, value):
     """Yields all possible paths from the root of t to a node with the label
     value as a list.
 
+    >>> double = tree(1, [tree(1)])
+    >>> sorted(yield_paths(double, 1))
+    [[1], [1, 1]]
     >>> t1 = tree(1, [tree(2, [tree(3), tree(4, [tree(6)]), tree(5)]), tree(5)])
     >>> print_tree(t1)
     1
@@ -114,11 +116,11 @@ def yield_paths(t, value):
     >>> sorted(list(path_to_2))
     [[0, 2], [0, 2, 1, 2]]
     """
-    "*** YOUR CODE HERE ***"
-    for _______________ in _________________:
-        for _______________ in _________________:
-            "*** YOUR CODE HERE ***"
-
+    if label(t) == value:
+        yield [value]
+    for b in branches(t):
+        for path in yield_paths(b, value):
+            yield [label(t)] + path
 
 def remainders_generator(m):
     """
@@ -151,7 +153,16 @@ def remainders_generator(m):
     7
     11
     """
-    "*** YOUR CODE HERE ***"
+    def g(i):
+        n = naturals()
+        while True:
+            k = next(n)
+            if k % m == i:
+                yield k
+
+    for i in range(m):
+        yield g(i)
+
 
 
 # Tree ADT
@@ -240,3 +251,10 @@ def naturals():
     while True:
         yield i
         i += 1
+
+remainders_four = remainders_generator(4)
+for i in range(4):
+    print("First 3 natural numbers with remainder {0} when divided by 4:".format(i))
+    gen = next(remainders_four)
+    for _ in range(3):
+        print(next(gen))
