@@ -254,3 +254,9 @@ def exp_fast(b, n):
 # Constant growth
 
 常数增长: Increasing n doesn't affect time
+
+# Object
+
+~~~python
+eval(repr(object)) == object
+~~~

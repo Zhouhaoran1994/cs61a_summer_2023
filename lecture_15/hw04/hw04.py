@@ -164,6 +164,209 @@ def remainders_generator(m):
         yield g(i)
 
 
+# Exam pratice
+
+# Summer 2018 Final Q7a,b
+def generate_constant(x):
+    """A generator function that repeats the same value X forever.
+    >>> two = generate_constant(2)
+    >>> next(two)
+    2
+    >>> next(two)
+    2
+    >>> sum([next(two) for _ in range(100)])
+    200
+    """
+    while True:
+        yield x
+
+def black_hole(seq, trap):
+    """A generator that yields items in SEQ until one of them matches TRAP, in
+    which case that value should be repeatedly yielded forever.
+    >>> trapped = black_hole([1, 2, 3], 2)
+    >>> [next(trapped) for _ in range(6)]
+    [1, 2, 2, 2, 2, 2]
+    >>> list(black_hole(range(5), 7))
+    [0, 1, 2, 3, 4]
+    """
+    for i in seq:
+        if i != trap:
+            yield i
+        else:
+            yield from generate_constant(trap)
+
+# Spring 2019 Final Q1
+"""
+game
+end None
+None ITERATOR
+"""
+
+"""
+[1000, 2000, 3000]
+"""
+
+"""
+ERROR
+"""
+
+"""
+["mind", "soul", "time", "soul", "time"]
+"""
+
+"""
+["mind", "time", "inevitable"]
+"""
+
+def alternate(real, ity):
+    i1, i2 = iter(real), iter(ity)
+    try:
+        while True:
+            yield next(i1)
+            yield next(i2)
+    except StopIteration:
+            yield 'inevitable'
+        
+""" thanos = ['power', 'space', 'reality']
+tony = ['mind', 'soul', 'time']
+i = iter(tony)
+next(i)
+tony.extend(list(i))
+thanos = tony[2::-2] """
+
+# Spring 2021 MT2 Q8
+def word_finder(letter_tree, words_list):
+    """ Generates each word that can be formed by following a path
+    in TREE_OF_LETTERS from the root to a leaf,
+    where WORDS_LIST is a list of allowed words (with no duplicates).
+
+    # Case 1: 2 words found
+    >>> words = ['SO', 'SAT', 'SAME', 'SAW', 'SOW']
+    >>> t = Tree("S", [Tree("O"), Tree("A", [Tree("Q"), Tree("W")]), Tree("C", [Tree("H")])])
+    >>> gen = word_finder(t, words)
+    >>> next(gen)
+    'SO'
+    >>> next(gen)
+    'SAW'
+    >>> list(word_finder(t, words))
+    ['SO', 'SAW']
+
+    # Case 2: No words found
+    >>> t = Tree("S", [Tree("I"), Tree("A", [Tree("Q"), Tree("E")]), Tree("C", [Tree("H")])])
+    >>> list(word_finder(t, words))
+    []
+
+    # Case 3: Same word twice
+    >>> t = Tree("S", [Tree("O"), Tree("O")] )
+    >>> list(word_finder(t, words))
+    ['SO', 'SO']
+
+    # Case 4: Words that start the same
+    >>> words = ['TAB', 'TAR', 'BAT', 'BAR', 'RAT']
+    >>> t = Tree("T", [Tree("A", [Tree("R"), Tree("B")])])
+    >>> list(word_finder(t, words))
+    ['TAR', 'TAB']
+
+    # Case 5: Single letter words
+    >>> words = ['A', 'AN', 'AH']
+    >>> t = Tree("A")
+    >>> list(word_finder(t, words))
+    ['A']
+
+    # Case 6: Words end in leaf
+    >>> words = ['A', 'AN', 'AH']
+    >>> t = Tree("A", [Tree("H"), Tree("N")])
+    >>> list(word_finder(t, words))
+    ['AH', 'AN']
+
+    # Case 7: Words start at root
+    >>> words = ['GO', 'BEARS', 'GOB', 'EARS']
+    >>> t = Tree("B", [Tree("E", [Tree("A", [Tree("R", [Tree("S")])])])])
+    >>> list(word_finder(t, words))
+    ['BEARS']
+
+    # Case 8: This special test ensures that your solution does *not*
+    # pre-compute all the words before yielding the first one.
+    # If done correctly, your solution should error only when it
+    # tries to find the second word in this tree.
+    >>> words = ['SO', 'SAM', 'SAT', 'SAME', 'SAW', 'SOW']
+    >>> t = Tree("S", [Tree("O"), Tree("A", [Tree("Q"), Tree(1)]), Tree("C", [Tree(1)])])
+    >>> gen = word_finder(t, words)
+    >>> next(gen)
+    'SO'
+    >>> try:
+    ...     next(gen)
+    ... except TypeError:
+    ...     print("Got a TypeError!")
+    ... else:
+    ...     print("Expected a TypeError!")
+    Got a TypeError!
+    """
+    # get all words of a tree
+    def helper(t, word):
+        word += t.label
+        if t.is_leaf() and word in words_list:
+            yield word
+        for b in t.branches:
+            yield from helper(b, word)
+    
+    yield from helper(letter_tree, "")
+
+
+
+def helper(t, word):
+    """
+    >>> t = tree("H", [tree("I"), tree("O"), tree("E")])
+    >>> list(helper(t, ""))
+    ['HI', 'HO', 'HE']
+    """
+    if is_leaf(t):
+        yield word + label(t)
+    for b in branches(t):
+        yield from helper(b, label(t))
+
+# Summer 2016 Final Q8
+def integers ( n ):
+    while True :
+        yield n
+        n += 1
+
+def drop (n , s ):
+    for _ in range ( n ):
+        next ( s )
+    for elem in s :
+        yield elem
+
+def powers_of_two ( ints = integers ( 0 )):
+    """
+    >>> p = powers_of_two ()
+    >>> [ next (p) for _ in range (10)]
+    [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+    """
+    curr = 2 ** next(ints)
+    yield curr
+    yield from powers_of_two(drop(0, ints))
+
+# Spring 2018 Final Q4a
+def times(f, x):
+    """Return a function g(y) that returns the number of f's in f(f(...(f(x)))) == y.
+    >>> times(lambda a: a + 2, 0)(10) # 5 times: 0 + 2 + 2 + 2 + 2 + 2 == 10
+    5
+    >>> times(lambda a: a * a, 2)(256) # 3 times: square(square(square(2))) == 256
+    3
+    """
+    def repeat(z):
+        yield z
+        yield from repeat(f(z))
+
+    def g(y):
+        n = 0
+        for w in repeat(x):
+            if w == y:
+                return n
+            n += 1
+    
+    return g
 
 # Tree ADT
 
@@ -236,6 +439,33 @@ def copy_tree(t):
     """
     return tree(label(t), [copy_tree(b) for b in branches(t)])
 
+class Tree:
+    """A tree."""
+    def __init__(self, label, branches=[]):
+        self.label = label
+        for branch in branches:
+            assert isinstance(branch, Tree)
+        self.branches = list(branches)
+
+    def __repr__(self):
+        if self.branches:
+            branch_str = ', ' + repr(self.branches)
+        else:
+            branch_str = ''
+        return 'Tree({0}{1})'.format(self.label, branch_str)
+
+    def __str__(self):
+        return '\n'.join(self.indented())
+
+    def indented(self):
+        lines = []
+        for b in self.branches:
+            for line in b.indented():
+                lines.append('  ' + line)
+        return [str(self.label)] + lines
+
+    def is_leaf(self):
+        return not self.branches
 
 def naturals():
     """A generator function that yields the infinite sequence of natural
@@ -252,9 +482,11 @@ def naturals():
         yield i
         i += 1
 
-remainders_four = remainders_generator(4)
-for i in range(4):
-    print("First 3 natural numbers with remainder {0} when divided by 4:".format(i))
-    gen = next(remainders_four)
-    for _ in range(3):
-        print(next(gen))
+""" words = ['SO', 'SAT', 'SAME', 'SAW', 'SOW']
+t = Tree("S", [Tree("O"), Tree("A", [Tree("Q"), Tree("W")]), Tree("C", [Tree("H")])])
+gen = word_finder(t, words)
+next(gen) """
+
+words = ["A", "AH", "AN"]
+t = Tree("A", [Tree("H"), Tree("N")])
+list(word_finder(t, words))
