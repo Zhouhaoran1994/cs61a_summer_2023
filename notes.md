@@ -259,4 +259,5 @@ def exp_fast(b, n):
 
 ~~~python
 eval(repr(object)) == object
+# print(object) == str(object)
 ~~~
