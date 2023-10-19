@@ -261,3 +261,5 @@ def exp_fast(b, n):
 eval(repr(object)) == object
 # print(object) == str(object)
 ~~~
+
+# Reading data
