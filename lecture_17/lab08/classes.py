@@ -249,15 +249,14 @@ class TACard(Card):
         """
         "*** YOUR CODE HERE ***"
         best_card = None
-        hand = player.hand
-        if len(hand) > 0:
-            best_card = hand[0]
-            for card in hand:
-                if card.power(opponent_card) > best_card.power(opponent_card):
-                    best_card = card
-            hand.remove(best_card)
+        max_power = -float("inf")
+        for card in player.hand:
+            if card.power(opponent_card) > max_power:
+                best_card = card
+        if best_card:
             self.attack += best_card.attack
             self.defense += best_card.defense
+            player.hand.remove(best_card)
         # You should add your implementation above this.
         if best_card:
             print(f"{self.name} discards {best_card.name} from my hand to increase its own power!")
