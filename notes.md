@@ -262,4 +262,20 @@ eval(repr(object)) == object
 # print(object) == str(object)
 ~~~
 
-# Reading data
+# String representation
+
+the ```print()``` function calls the ```__str__``` method of the object and displays the returned string **with the quotations removed**
+
+while simply calling the object in interactive mode in the interpreter calls the ```__repr__``` method and displays the returned string **with the quotations removed**.
+
+~~~python
+>>> a = Rational(1, 2)
+>>> str(a)
+'1/2'
+>>> repr(a)
+'Rational(1,2)'
+>>> print(a)
+1/2
+>>> a
+Rational(1,2)
+~~~
