@@ -102,7 +102,85 @@ def prune_small(t, n):
     for b in t.branches:
         prune_small(b, n)
 
+# Q5: Convert Link
+def convert_link(link):
+    """Takes a linked list and returns a Python list with the same elements.
 
+    >>> link = Link(1, Link(2, Link(3, Link(4))))
+    >>> convert_link(link)
+    [1, 2, 3, 4]
+    >>> convert_link(Link.empty)
+    []
+    """
+    "*** YOUR CODE HERE ***"
+    if link is Link.empty:
+        return []
+    else:
+        return [link.first] + convert_link(link.rest)
+
+# Q6: Duplicate Link
+def duplicate_link(link, val):
+    """Mutates `link` such that if there is a linked list
+    node that has a first equal to value, that node will
+    be duplicated. Note that you should be mutating the
+    original link list.
+
+    >>> x = Link(5, Link(4, Link(3)))
+    >>> duplicate_link(x, 5)
+    >>> x
+    Link(5, Link(5, Link(4, Link(3))))
+    >>> y = Link(2, Link(4, Link(6, Link(8))))
+    >>> duplicate_link(y, 10)
+    >>> y
+    Link(2, Link(4, Link(6, Link(8))))
+    >>> z = Link(1, Link(2, (Link(2, Link(3)))))
+    >>> duplicate_link(z, 2) #ensures that back to back links with val are both duplicated
+    >>> z
+    Link(1, Link(2, Link(2, Link(2, Link(2, Link(3))))))
+    """
+    "*** YOUR CODE HERE ***"
+    if link is Link.empty:
+        return
+    elif link.first == val:
+        link.rest = Link(link.first, link.rest)
+        duplicate_link(link.rest.rest, val)
+    else:
+        duplicate_link(link.rest, val)
+
+# Q7: Remove All
+def remove_all(link, value):
+    """Remove all the nodes containing value in link. Assume that the
+    first element is never removed.
+
+    >>> l1 = Link(0, Link(2, Link(2, Link(3, Link(1, Link(2, Link(3)))))))
+    >>> print(l1)
+    <0 2 2 3 1 2 3>
+    >>> remove_all(l1, 2)
+    >>> print(l1)
+    <0 3 1 3>
+    >>> remove_all(l1, 3)
+    >>> print(l1)
+    <0 1>
+    >>> remove_all(l1, 3)
+    >>> print(l1)
+    <0 1>
+    """
+    "*** YOUR CODE HERE ***"
+    """ 
+    if link.rest is Link.empty:
+        return
+    elif link.rest.first == value:
+        link.rest = link.rest.rest
+        remove_all(link, value)
+    else:
+        remove_all(link.rest, value)
+     """
+
+    while link.rest is not Link.empty:
+        if link.rest.first == value:
+            link.rest = link.rest.rest
+        else:
+            link = link.rest
 
 class Link:
     empty = ()
