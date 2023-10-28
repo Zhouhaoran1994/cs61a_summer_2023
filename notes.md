@@ -279,3 +279,62 @@ while simply calling the object in interactive mode in the interpreter calls the
 >>> a
 Rational(1,2)
 ~~~
+
+# Scheme
+
+## Special forms
+
+### cond
+
+Just like if-elif-else in Python.
+
+~~~scheme
+(cond ((> x 10) (print 'big))
+    ((> x 5) (print 'medium))
+    (else (print 'small)))
+
+(print
+    (cond ((> x 10) 'big)
+        ((> x 5) 'medium)
+        (else 'small)))
+~~~
+
+### begin
+
+It combines multiple expressions into one.
+
+~~~scheme
+(cond ((> x 10) (beging (print 'big) (print 'guy))
+    (else (begin (print 'small) (print 'fry)))
+))
+~~~
+
+## List
+
+~~~scheme
+scm> (cons 1 (cons 2 nil))
+scm> (define s (cons 1 (cons 2 nil)))
+scm> (car s)
+1
+scm> (cdr s)
+(2)
+scm> (list? s)
+#t
+scm> (null? s)
+#f
+scm> (null? nil)
+#t
+scm> (list 1 2 3 4)
+(1 2 3 4)
+~~~
+
+## Symbolic Programming
+
+~~~scheme
+scm> (define a 1)
+scm> (define b 1)
+scm> (list a b)
+(1 2)
+scm>  (list 'a 'b)
+(a b)
+~~~
