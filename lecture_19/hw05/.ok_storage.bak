@@ -1,0 +1,5 @@
+'Mint-correct', (0, 66)
+'add_d_leaves-correct', (512, 66)
+'store_digits-correct', (1024, 66)
+'deep_map_mut-correct', (1536, 66)
+'two_list-correct', (2048, 66)
