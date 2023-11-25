@@ -282,7 +282,7 @@ Rational(1,2)
 
 # Scheme
 
-## Special forms
+## [Special forms](https://inst.eecs.berkeley.edu/~cs61a/su23/disc/disc08/)
 
 ### cond
 
@@ -304,7 +304,7 @@ Just like if-elif-else in Python.
 It combines multiple expressions into one.
 
 ~~~scheme
-(cond ((> x 10) (beging (print 'big) (print 'guy))
+(cond ((> x 10) (begin (print 'big) (print 'guy))
     (else (begin (print 'small) (print 'fry)))
 ))
 ~~~
@@ -337,4 +337,17 @@ scm> (list a b)
 (1 2)
 scm>  (list 'a 'b)
 (a b)
+~~~
+
+## Tail recursion
+
+~~~scheme
+(define (length s)
+    (if (null? s) 0
+        (+ 1 (length (cdr s))))) ; not a tail call, other works to do
+
+(define (length-tail s)
+    (define (length-iter s n)
+        (if (null? s) 0
+            (length-iter (cdr s) (+ 1 n))))) ; a tail call
 ~~~
