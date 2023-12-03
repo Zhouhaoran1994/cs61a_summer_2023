@@ -341,6 +341,8 @@ scm>  (list 'a 'b)
 
 ## Tail recursion
 
+A tail call occurs when a function calls another function as the last action of the current frame.
+
 ~~~scheme
 (define (length s)
     (if (null? s) 0
