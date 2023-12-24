@@ -353,3 +353,44 @@ A tail call occurs when a function calls another function as the last action of 
         (if (null? s) 0
             (length-iter (cdr s) (+ 1 n))))) ; a tail call
 ~~~
+
+The interpreter needed less steps to come up with the result, and it didn't need to re-visit the earlier frames to come up with the final product.
+
+~~~scheme
+(define (factorial n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+
+(factorial 6)
+(* 6 (factorial 5))
+(* 6 (* 5 (factorial 4)))
+(* 6 (* 5 (* 4 (factorial 3))))
+(* 6 (* 5 (* 4 (* 3 (factorial 2)))))
+(* 6 (* 5 (* 4 (* 3 (* 2 (factorial 1))))))
+(* 6 (* 5 (* 4 (* 3 (* 2 1)))))
+(* 6 (* 5 (* 4 (* 3 2))))
+(* 6 (* 5 (* 4 6)))
+(* 6 (* 5 24))
+(* 6 120)
+720
+~~~
+
+~~~scheme
+(define (factorial n)
+  (define (fact-tail n result)
+    (if (= n 0)
+        result
+        (fact-tail (- n 1) (* n result))))
+  (fact-tail n 1))
+
+(factorial 6)
+(fact-tail 6 1)
+(fact-tail 5 6)
+(fact-tail 4 30)
+(fact-tail 3 120)
+(fact-tail 2 360)
+(fact-tail 1 720)
+(fact-tail 0 720)
+720
+~~~
