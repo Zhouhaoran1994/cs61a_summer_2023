@@ -73,3 +73,53 @@ def phone_number(string):
     """
     return bool(re.search(r"\b((\d{3}[-\s]?\d{4})|(\d[-\s]?\d{3}[-\s]?\d{3}[-\s]?\d{4})|(\d{3}[-\s]?\d{3}[-\s]?\d{4}))\b", string))
 
+# Q4
+def address_oneline(text):
+    """
+    Finds and returns if there are expressions in text that represent the first line
+    of a US mailing address.
+
+    >>> address_oneline("110 Sproul Hall, Berkeley, CA 94720")
+    True
+    >>> address_oneline("What's at 39177 Farwell Dr? Is there a 39177 Nearwell Dr?")
+    True
+    >>> address_oneline("I just landed at 780 N McDonnell Rd, and I need to get to 1880-ish University Avenue. Help!")
+    True
+    >>> address_oneline("123 Le Roy Ave")
+    True
+    >>> address_oneline("110 Unabbreviated Boulevard")
+    False
+    >>> address_oneline("790 lowercase St")
+    False
+    """
+    block_number = r'\d{3,5}'
+    cardinal_dir = r'((N|E|W|S)\s)?' # whitespace is important!
+    street = r'.+'
+    type_abbr = r'(Dr|Rd|Ave|CA)'
+    street_name = f"{cardinal_dir}{street}{type_abbr}"
+    return bool(re.search(f"{block_number} {street_name}", text))
+
+# Q5
+def match_url(text):
+    """
+    >>> match_url("https://cs61a.org/resources/#regular-expressions")
+    True
+    >>> match_url("https://pythontutor.com/composingprograms.html")
+    True
+    >>> match_url("https://pythontutor.com/should/not.match.this")
+    False
+    >>> match_url("https://link.com/nor.this/")
+    False
+    >>> match_url("http://insecure.net")
+    True
+    >>> match_url("htp://domain.org")
+    False
+    """
+    beginning = r''
+    scheme = r'https?:\/\/'
+    domain = r'\w[\w.]+\w'
+    path = r'((\/[\w\/]+)(\.\w+)?)?'
+    anchor = r'(#[\w-]+)?$'
+    end = r''
+    full_string = beginning + scheme + domain + path + anchor + end
+    return bool(re.match(full_string, text))
